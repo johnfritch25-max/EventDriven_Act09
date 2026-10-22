@@ -1,0 +1,88 @@
+{{> head}}
+<body class="bg-gray-50">
+
+  <!-- Navbar -->
+  <nav class="bg-white border-b px-6 py-3 flex items-center justify-between">
+    <span class="font-bold text-lg">🛍️ ShopXian</span>
+    <div class="flex gap-4 text-sm">
+      <a href="/shop" class="text-gray-700 hover:text-blue-600">Shop</a>
+      <a href="/cart" class="text-gray-700 hover:text-blue-600">Cart 🛒</a>
+      {{#if user}}
+        <a href="/orders" class="text-gray-700 hover:text-blue-600">My Orders</a>
+        {{#if (eq role "admin")}}
+          <a href="/admin" class="text-yellow-600 font-semibold hover:underline">Admin Panel</a>
+        {{/if}}
+        <a href="/logout" class="text-red-500 hover:underline">Logout</a>
+        <span class="text-gray-400">| Hi, {{user}}</span>
+      {{else}}
+        <a href="/login" class="text-blue-600 hover:underline">Login</a>
+        <a href="/register" class="text-blue-600 hover:underline">Register</a>
+      {{/if}}
+    </div>
+  </nav>
+
+  <!-- Flash messages -->
+  {{#if success_msg}}
+    <div class="bg-green-100 text-green-700 px-6 py-2 text-sm">✅ {{success_msg}}</div>
+  {{/if}}
+  {{#if error_msg}}
+    <div class="bg-red-100 text-red-700 px-6 py-2 text-sm">❌ {{error_msg}}</div>
+  {{/if}}
+
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">Products</h1>
+
+    <!-- Search bar -->
+    <form method="GET" action="/shop" class="mb-6 flex gap-2">
+      <input
+        type="text"
+        name="search"
+        value="{{search}}"
+        placeholder="Search products..."
+        class="border rounded px-3 py-2 text-sm w-64"
+      />
+      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded text-sm">Search</button>
+      {{#if search}}
+        <a href="/shop" class="text-sm text-gray-500 self-center hover:underline">Clear</a>
+      {{/if}}
+    </form>
+
+    <!-- Product Grid -->
+    {{#if products.length}}
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {{#each products}}
+          <div class="bg-white border rounded-lg overflow-hidden shadow-sm">
+            {{#if image}}
+              <img src="{{image}}" alt="{{name}}" class="w-full h-40 object-cover" />
+            {{else}}
+              <div class="w-full h-40 bg-gray-100 flex items-center justify-center text-3xl">📦</div>
+            {{/if}}
+            <div class="p-3">
+              <p class="font-semibold text-gray-800 text-sm">{{name}}</p>
+              <p class="text-gray-500 text-xs mt-1 line-clamp-2">{{description}}</p>
+              <p class="text-blue-600 font-bold mt-2">₱{{price}}</p>
+              <p class="text-xs text-gray-400">Stock: {{stock}}</p>
+              {{#if stock}}
+                <form method="POST" action="/cart/add/{{id}}" class="mt-2">
+                  <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white text-sm py-1.5 rounded">
+                    Add to Cart
+                  </button>
+                </form>
+              {{else}}
+                <button disabled class="mt-2 w-full bg-gray-200 text-gray-400 text-sm py-1.5 rounded cursor-not-allowed">
+                  Out of Stock
+                </button>
+              {{/if}}
+            </div>
+          </div>
+        {{/each}}
+      </div>
+    {{else}}
+      <div class="text-center py-20 text-gray-400">
+        <p class="text-4xl mb-3">📦</p>
+        <p>No products found.</p>
+      </div>
+    {{/if}}
+  </div>
+
+{{> footer}}

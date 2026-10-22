@@ -1,0 +1,47 @@
+{{> head}}
+<body class="bg-gray-50">
+
+  <nav class="bg-white border-b px-6 py-3 flex items-center justify-between">
+    <span class="font-bold text-lg">🛍️ ShopXian</span>
+    <div class="flex gap-4 text-sm">
+      <a href="/shop" class="text-gray-700 hover:text-blue-600">Shop</a>
+      <a href="/cart" class="text-gray-700 hover:text-blue-600">Cart 🛒</a>
+      <a href="/logout" class="text-red-500 hover:underline">Logout</a>
+    </div>
+  </nav>
+
+  <div class="max-w-2xl mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">Checkout</h1>
+
+    <!-- Order Summary -->
+    <div class="bg-white border rounded p-4 mb-4">
+      <h2 class="font-semibold mb-3 text-gray-700">Order Summary</h2>
+      {{#each cart}}
+        <div class="flex justify-between text-sm py-1 border-b last:border-0">
+          <span>{{name}} × {{qty}}</span>
+          <span>₱{{price}}</span>
+        </div>
+      {{/each}}
+      <div class="flex justify-between font-bold text-blue-600 mt-3">
+        <span>Total</span>
+        <span>₱{{total}}</span>
+      </div>
+    </div>
+
+    <!-- Address Form -->
+    <form method="POST" action="/checkout" class="bg-white border rounded p-4">
+      <h2 class="font-semibold mb-3 text-gray-700">Delivery Address</h2>
+      <textarea
+        name="address"
+        rows="3"
+        required
+        placeholder="Enter your full delivery address..."
+        class="w-full border rounded px-3 py-2 text-sm mb-3"
+      ></textarea>
+      <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded text-sm w-full">
+        Place Order
+      </button>
+    </form>
+  </div>
+
+{{> footer}}

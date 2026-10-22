@@ -1,0 +1,73 @@
+{{> head}}
+<body class="bg-gray-50">
+
+  <nav class="bg-gray-800 text-white px-6 py-3 flex items-center justify-between">
+    <span class="font-bold">🛠️ Admin Panel</span>
+    <div class="flex gap-4 text-sm">
+      <a href="/admin" class="hover:text-yellow-300">Dashboard</a>
+      <a href="/admin/products" class="hover:text-yellow-300">Products</a>
+      <a href="/admin/orders" class="hover:text-yellow-300">Orders</a>
+      <a href="/admin/users" class="hover:text-yellow-300">Users</a>
+      <a href="/shop" class="hover:text-yellow-300">View Shop</a>
+      <a href="/logout" class="text-red-400 hover:underline">Logout</a>
+    </div>
+  </nav>
+
+  {{#if success_msg}}
+    <div class="bg-green-100 text-green-700 px-6 py-2 text-sm">✅ {{success_msg}}</div>
+  {{/if}}
+
+  <div class="max-w-5xl mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">Dashboard</h1>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-3 gap-4 mb-8">
+      <div class="bg-white border rounded p-4 text-center">
+        <p class="text-3xl font-bold text-blue-600">{{productCount}}</p>
+        <p class="text-sm text-gray-500 mt-1">Products</p>
+      </div>
+      <div class="bg-white border rounded p-4 text-center">
+        <p class="text-3xl font-bold text-green-600">{{orderCount}}</p>
+        <p class="text-sm text-gray-500 mt-1">Orders</p>
+      </div>
+      <div class="bg-white border rounded p-4 text-center">
+        <p class="text-3xl font-bold text-purple-600">{{userCount}}</p>
+        <p class="text-sm text-gray-500 mt-1">Users</p>
+      </div>
+    </div>
+
+    <!-- Quick links -->
+    <div class="flex gap-3">
+      <a href="/admin/products/add" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded text-sm">+ Add Product</a>
+      <a href="/admin/orders" class="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded text-sm">View Orders</a>
+    </div>
+
+    <!-- Recent Orders -->
+    {{#if recentOrders.length}}
+      <h2 class="font-semibold text-gray-700 mt-8 mb-3">Recent Orders</h2>
+      <div class="bg-white border rounded overflow-hidden">
+        <table class="w-full text-sm">
+          <thead class="bg-gray-100 text-gray-600">
+            <tr>
+              <th class="text-left px-4 py-2">Order #</th>
+              <th class="text-left px-4 py-2">Total</th>
+              <th class="text-left px-4 py-2">Status</th>
+              <th class="text-left px-4 py-2">Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each recentOrders}}
+              <tr class="border-t">
+                <td class="px-4 py-2">#{{id}}</td>
+                <td class="px-4 py-2">₱{{total}}</td>
+                <td class="px-4 py-2">{{status}}</td>
+                <td class="px-4 py-2 text-gray-400 text-xs">{{createdAt}}</td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    {{/if}}
+  </div>
+
+{{> footer}}

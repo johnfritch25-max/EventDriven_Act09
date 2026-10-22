@@ -1,0 +1,108 @@
+{{> head}}
+<body class="bg-gray-50">
+
+  <nav class="bg-gray-800 text-white px-6 py-3 flex items-center justify-between">
+    <span class="font-bold">🛠️ Admin Panel</span>
+    <div class="flex gap-4 text-sm">
+      <a href="/admin" class="hover:text-yellow-300">Dashboard</a>
+      <a href="/admin/products" class="hover:text-yellow-300">Products</a>
+      <a href="/admin/orders" class="hover:text-yellow-300">Orders</a>
+      <a href="/admin/users" class="hover:text-yellow-300">Users</a>
+      <a href="/logout" class="text-red-400 hover:underline">Logout</a>
+    </div>
+  </nav>
+
+  {{#if error_msg}}
+    <div class="bg-red-100 text-red-700 px-6 py-2 text-sm">❌ {{error_msg}}</div>
+  {{/if}}
+
+  <div class="max-w-xl mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">{{title}}</h1>
+
+    <form
+      method="POST"
+      action="{{#if product}}/admin/products/edit/{{product.id}}{{else}}/admin/products/add{{/if}}"
+      enctype="multipart/form-data"
+      class="bg-white border rounded p-6 flex flex-col gap-4"
+    >
+      <div>
+        <label class="block text-sm text-gray-600 mb-1">Product Name *</label>
+        <input
+          type="text"
+          name="name"
+          value="{{product.name}}"
+          required
+          class="w-full border rounded px-3 py-2 text-sm"
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm text-gray-600 mb-1">Description</label>
+        <textarea
+          name="description"
+          rows="3"
+          class="w-full border rounded px-3 py-2 text-sm"
+        >{{product.description}}</textarea>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm text-gray-600 mb-1">Price (₱) *</label>
+          <input
+            type="number"
+            name="price"
+            value="{{product.price}}"
+            min="0"
+            step="0.01"
+            required
+            class="w-full border rounded px-3 py-2 text-sm"
+          />
+        </div>
+        <div>
+          <label class="block text-sm text-gray-600 mb-1">Stock *</label>
+          <input
+            type="number"
+            name="stock"
+            value="{{product.stock}}"
+            min="0"
+            required
+            class="w-full border rounded px-3 py-2 text-sm"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm text-gray-600 mb-1">Category</label>
+        <input
+          type="text"
+          name="category"
+          value="{{product.category}}"
+          placeholder="e.g. Electronics, Clothing..."
+          class="w-full border rounded px-3 py-2 text-sm"
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm text-gray-600 mb-1">Product Image</label>
+        {{#if product.image}}
+          <img src="{{product.image}}" class="w-24 h-24 object-cover rounded mb-2" />
+          <p class="text-xs text-gray-400 mb-1">Upload a new image to replace the current one.</p>
+        {{/if}}
+        <input
+          type="file"
+          name="image"
+          accept="image/jpeg,image/png,image/webp"
+          class="w-full border rounded px-3 py-2 text-sm"
+        />
+      </div>
+
+      <div class="flex gap-3">
+        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded text-sm">
+          {{#if product}}Update Product{{else}}Add Product{{/if}}
+        </button>
+        <a href="/admin/products" class="text-sm text-gray-500 self-center hover:underline">Cancel</a>
+      </div>
+    </form>
+  </div>
+
+{{> footer}}

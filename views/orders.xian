@@ -1,0 +1,52 @@
+{{> head}}
+<body class="bg-gray-50">
+
+  <nav class="bg-white border-b px-6 py-3 flex items-center justify-between">
+    <span class="font-bold text-lg">🛍️ ShopXian</span>
+    <div class="flex gap-4 text-sm">
+      <a href="/shop" class="text-gray-700 hover:text-blue-600">Shop</a>
+      <a href="/cart" class="text-gray-700 hover:text-blue-600">Cart 🛒</a>
+      <a href="/orders" class="text-gray-700 hover:text-blue-600">My Orders</a>
+      <a href="/logout" class="text-red-500 hover:underline">Logout</a>
+    </div>
+  </nav>
+
+  {{#if success_msg}}
+    <div class="bg-green-100 text-green-700 px-6 py-2 text-sm">✅ {{success_msg}}</div>
+  {{/if}}
+
+  <div class="max-w-4xl mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">My Orders</h1>
+
+    {{#if orders.length}}
+      {{#each orders}}
+        <div class="bg-white border rounded p-4 mb-4">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-sm text-gray-500">Order #{{id}} · {{createdAt}}</span>
+            <span class="text-xs px-2 py-0.5 rounded bg-yellow-100 text-yellow-700 font-medium">{{status}}</span>
+          </div>
+          {{#each items}}
+            <div class="flex justify-between text-sm py-1 border-b last:border-0">
+              <span>{{productName}} × {{quantity}}</span>
+              <span>₱{{price}}</span>
+            </div>
+          {{/each}}
+          <div class="flex justify-between font-semibold mt-2 text-blue-600">
+            <span>Total</span>
+            <span>₱{{total}}</span>
+          </div>
+          {{#if address}}
+            <p class="text-xs text-gray-400 mt-1">Deliver to: {{address}}</p>
+          {{/if}}
+        </div>
+      {{/each}}
+    {{else}}
+      <div class="text-center py-20 text-gray-400">
+        <p class="text-4xl mb-3">📋</p>
+        <p>No orders yet.</p>
+        <a href="/shop" class="mt-2 inline-block text-blue-500 hover:underline text-sm">Start Shopping</a>
+      </div>
+    {{/if}}
+  </div>
+
+{{> footer}}

@@ -1,0 +1,92 @@
+{{> head}}
+<body class="bg-gray-50">
+
+  <!-- Navbar -->
+  <nav class="bg-white border-b px-6 py-3 flex items-center justify-between">
+    <span class="font-bold text-lg">🛍️ ShopXian</span>
+    <div class="flex gap-4 text-sm">
+      <a href="/shop" class="text-gray-700 hover:text-blue-600">Shop</a>
+      <a href="/cart" class="text-gray-700 hover:text-blue-600">Cart 🛒</a>
+      {{#if user}}
+        <a href="/orders" class="text-gray-700 hover:text-blue-600">My Orders</a>
+        {{#if (eq role "admin")}}
+          <a href="/admin" class="text-yellow-600 font-semibold hover:underline">Admin Panel</a>
+        {{/if}}
+        <a href="/logout" class="text-red-500 hover:underline">Logout</a>
+      {{else}}
+        <a href="/login" class="text-blue-600 hover:underline">Login</a>
+      {{/if}}
+    </div>
+  </nav>
+
+  {{#if success_msg}}
+    <div class="bg-green-100 text-green-700 px-6 py-2 text-sm">✅ {{success_msg}}</div>
+  {{/if}}
+
+  <div class="max-w-3xl mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">🛒 My Cart</h1>
+
+    {{#if cart.length}}
+      <table class="w-full text-sm border rounded overflow-hidden bg-white">
+        <thead class="bg-gray-100 text-gray-600">
+          <tr>
+            <th class="text-left px-4 py-2">Product</th>
+            <th class="px-4 py-2">Price</th>
+            <th class="px-4 py-2">Qty</th>
+            <th class="px-4 py-2">Remove</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each cart}}
+          <tr class="border-t">
+            <td class="px-4 py-2 flex items-center gap-2">
+              {{#if image}}
+                <img src="{{image}}" class="w-10 h-10 object-cover rounded" />
+              {{/if}}
+              {{name}}
+            </td>
+            <td class="px-4 py-2 text-center">₱{{price}}</td>
+            <td class="px-4 py-2 text-center">
+              <form method="POST" action="/cart/update/{{id}}" class="flex items-center justify-center gap-1">
+                <input type="number" name="qty" value="{{qty}}" min="0" class="w-14 border rounded px-1 py-0.5 text-center text-sm" />
+                <button type="submit" class="text-blue-500 text-xs hover:underline">Update</button>
+              </form>
+            </td>
+            <td class="px-4 py-2 text-center">
+              <form method="POST" action="/cart/remove/{{id}}">
+                <button type="submit" class="text-red-500 hover:underline text-xs">Remove</button>
+              </form>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+
+      <div class="mt-6 flex items-center justify-between">
+        <form method="POST" action="/cart/clear">
+          <button type="submit" class="text-sm text-red-400 hover:underline">Clear Cart</button>
+        </form>
+        <div class="text-right">
+          <p class="text-gray-600 font-semibold text-lg">Total: <span class="text-blue-600">₱{{total}}</span></p>
+          {{#if user}}
+            <a href="/checkout" class="mt-2 inline-block bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded text-sm">
+              Checkout →
+            </a>
+          {{else}}
+            <a href="/login" class="mt-2 inline-block bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded text-sm">
+              Login to Checkout
+            </a>
+          {{/if}}
+        </div>
+      </div>
+
+    {{else}}
+      <div class="text-center py-20 text-gray-400">
+        <p class="text-4xl mb-3">🛒</p>
+        <p>Your cart is empty.</p>
+        <a href="/shop" class="mt-2 inline-block text-blue-500 hover:underline text-sm">Go Shopping</a>
+      </div>
+    {{/if}}
+  </div>
+
+{{> footer}}

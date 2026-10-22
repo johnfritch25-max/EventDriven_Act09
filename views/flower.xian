@@ -1,0 +1,7 @@
+{{>head}}
+<form action="">
+    <label for="flower"> Flower Name</label>
+    <input type="file" name="image" id="image" required>
+    <br>
+    <label for="photo">Picture</label>
+</form>
